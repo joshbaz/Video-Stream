@@ -30,6 +30,7 @@ const Payment = () => {
 
   return (
     <div className="flex flex-col items-center justify-center relative bg-black bg-opacity-70 h-[100vh] w-[100vw]">
+      <a href="vscode://settings/editor.wordWrap">Donate</a>
       
       <Buttons className="font-bold font-sans " onClick={()=>setOpenAmountModal(true)}>Donate</Buttons>
       {openAmountModal && (
