@@ -11,7 +11,7 @@ const DonateContent = ({ innerref, handleStepNext, stepperData, currentStep, set
   const { contactData, setContactData, paymentData, setRedirectPath } = useContext(DonateStepperContext);
 
   const validationSchema = yup.object().shape({
-   
+
     phonenumber: yup.number().required("phonenumber is required"),
     firstname: yup.string().required("firstname required"),
     lastname: yup.string().required("firstname required"),
@@ -30,22 +30,43 @@ const DonateContent = ({ innerref, handleStepNext, stepperData, currentStep, set
       let submitValues = {
         ...contactData, ...values, ...paymentData
       }
-    //  let formDatas = new FormData(submitValues)
+      //  let formDatas = new FormData(submitValues)
 
       console.log(submitValues)
-     // setIsSubmitting(() => true)
-      let axiosPost = await axios.post("http://localhost:8000/nyatipay/donate", submitValues, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      
-      setRedirectPath({ redirectpath: axiosPost.data.redirect_url })
-      setTimeout(() => {
-        handleStepNext()
-      }, 1000);
+      // setIsSubmitting(() => true)
+      if (submitValues.paymentType === "Visa") {
+
+        let axiosPost = await axios.post("http://localhost:8000/nyatipay/donate", submitValues, {
+          headers: { 'content-type': 'multipart/form-data' }
+        })
+
+        setRedirectPath({ redirectpath: axiosPost.data.redirect_url })
+        setTimeout(() => {
+          handleStepNext()
+        }, 1000);
+      } else if (submitValues.paymentType === "Airtel") {
+        let axiosPost = await axios.post("http://localhost:8000/nyatiairtel/donate", submitValues, {
+          headers: { 'content-type': 'multipart/form-data' }
+        })
+
+        setRedirectPath({ redirectpath: axiosPost.data.redirect_url })
+        setTimeout(() => {
+          handleStepNext()
+        }, 1000);
+      } else if (submitValues.paymentType === "MTN") {
+        let axiosPost = await axios.post("http://localhost:8000/nyatipay/donate", submitValues, {
+          headers: { 'content-type': 'multipart/form-data' }
+        })
+
+        setRedirectPath({ redirectpath: axiosPost.data.redirect_url })
+        setTimeout(() => {
+          handleStepNext()
+        }, 1000);
+      }
 
     }}>
       {({ values, handleChange, errors, touched, setFieldValue }) => (
-<Form>
+        <Form>
           <div className="bg-white min-h-[60vh] w-full h-full flex flex-col py-8 sm:py-8 max-w-[90%] px-5 sm:max-w-[540px] sm:px-16 gap-[20px] !overflow-y-auto mx-auto">
             {/** Image && text */}
             <div className="flex w-full flex-col gap-[10px] sm:gap-[16px] items-center">
@@ -64,7 +85,7 @@ const DonateContent = ({ innerref, handleStepNext, stepperData, currentStep, set
               <h1 className="font-[Inter-SemiBold] text-[18px]">Donation Details</h1>
               {/** inputs */}
               <div className="flex flex-col gap-[10px]">
-               
+
                 <div className="flex gap-2">
                   <div className="w-full gap-2">
                     <label className="text-[#3C3A3B] font-[Roboto-Medium] text-sm">
@@ -93,7 +114,7 @@ const DonateContent = ({ innerref, handleStepNext, stepperData, currentStep, set
                     {errors && errors.phonenumber ? <p className="font-[Inter-SemiBold] text-red-400 text-xs">{errors.phonenumber}</p> : null}
                   </div>
                 </div>
-                
+
                 <div className="w-full gap-2">
                   <label className="text-[#3C3A3B] font-[Roboto-Medium] text-sm">
                     First name{" "}
@@ -159,8 +180,8 @@ const DonateContent = ({ innerref, handleStepNext, stepperData, currentStep, set
             {/** loader */}
             {isGSubmitting && Object.keys(errors).length === 0 ? <CustomLoader /> : null}
           </div>
-</Form>
-       
+        </Form>
+
       )}
     </Formik>
 
