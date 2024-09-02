@@ -6,6 +6,7 @@ import axios from "axios";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
 import CustomLoader from './CustomLoader';
+import { BASE_API_ } from '../../4-Utils/base_url.js';
 
 const DonateContent = ({ innerref, handleStepNext, stepperData, currentStep, setIsSubmitting, isGSubmitting, handleFormSubmit, close }) => {
   const { contactData, setContactData, paymentData, setRedirectPath } = useContext(DonateStepperContext);
@@ -35,30 +36,40 @@ const DonateContent = ({ innerref, handleStepNext, stepperData, currentStep, set
       console.log(submitValues)
       // setIsSubmitting(() => true)
       if (submitValues.paymentType === "Visa") {
+        //PESAPAL - DONATION PAYMENTS
 
-        let axiosPost = await axios.post("http://localhost:8000/nyatipay/donate", submitValues, {
+        let axiosPost = await axios.post(`${BASE_API_}/nyatipay/donate`, submitValues, {
           headers: { 'content-type': 'multipart/form-data' }
         })
 
-        setRedirectPath({ redirectpath: axiosPost.data.redirect_url })
+        setRedirectPath({ redirectpath: axiosPost.data.redirect_url, payMode: "Visa", orderTrackingId: null })
         setTimeout(() => {
           handleStepNext()
         }, 1000);
       } else if (submitValues.paymentType === "Airtel") {
-        let axiosPost = await axios.post("http://localhost:8000/nyatiairtel/donate", submitValues, {
-          headers: { 'content-type': 'multipart/form-data' }
-        })
+        //AIRTEL DONATION PAYMENT
+        // let axiosPost = await axios.post(`${BASE_API_}/nyatiairtel/donate`, submitValues, {
+        //   headers: { 'content-type': 'multipart/form-data' }
+        // })
 
-        setRedirectPath({ redirectpath: axiosPost.data.redirect_url })
+        //actual test
+        // setRedirectPath({ redirectpath: null, payMode: "A-Mobile", orderTrackingId: axiosPost.data.orderTrackingId });
+        //dummy test
+        setRedirectPath({ redirectpath: null, payMode: "A-Mobile", orderTrackingId: "66b0bdab0c3c7868f6ed047b" });
         setTimeout(() => {
           handleStepNext()
         }, 1000);
       } else if (submitValues.paymentType === "MTN") {
-        let axiosPost = await axios.post("http://localhost:8000/nyatipay/donate", submitValues, {
-          headers: { 'content-type': 'multipart/form-data' }
-        })
+        // MTN DONATION PAYMENT
+        // let axiosPost = await axios.post(`${BASE_API_}/nyatipay/donate`, submitValues, {
+        //   headers: { 'content-type': 'multipart/form-data' }
+        // })
 
-        setRedirectPath({ redirectpath: axiosPost.data.redirect_url })
+        //actual test
+        // setRedirectPath({ redirectpath: null, payMode: "M-Mobile", orderTrackingId: axiosPost.data.orderTrackingId })
+        //dummy test
+        setRedirectPath({ redirectpath: null, payMode: "M-Mobile", orderTrackingId: "66b0bdab0c3c7868f6ed047b" })
+
         setTimeout(() => {
           handleStepNext()
         }, 1000);

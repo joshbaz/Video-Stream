@@ -27,7 +27,9 @@ const DonateModal = ({ visible, onClose, selectedAmount }) => {
     paymentType: ""
   })
   const [redirectPath, setRedirectPath] = React.useState({
-    redirectpath: ""
+    redirectpath: "",
+    payMode: "",
+    orderTrackingId: null
   })
 
   const [contactData, setContactData] = React.useState({
